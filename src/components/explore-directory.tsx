@@ -204,19 +204,6 @@ export function ExploreDirectory({ items }: ExploreDirectoryProps) {
                   <span className="italic text-brand-gold">Psi Omega.</span>
                 </h2>
               </div>
-
-              <div className="explore-depth-cue">
-                <p className="text-sm leading-6 text-white/58">
-                  Scroll to bring each destination forward.
-                </p>
-                <p
-                  aria-hidden="true"
-                  className="mt-3 font-mono text-xs font-semibold tracking-[0.2em] text-brand-gold"
-                >
-                  {String(activeIndex + 1).padStart(2, '0')} /{' '}
-                  {String(itemCount).padStart(2, '0')}
-                </p>
-              </div>
             </header>
 
             <nav
@@ -226,8 +213,9 @@ export function ExploreDirectory({ items }: ExploreDirectoryProps) {
               onBlurCapture={handleNavBlur}
             >
               <p id="explore-depth-instructions" className="sr-only">
-                Choose from five chapter destinations. On large screens, focus
-                brings each link to the front of a decorative depth carousel.
+                Choose from {itemCount} chapter destinations. On large screens,
+                focus brings each link to the front of a decorative depth
+                carousel.
               </p>
 
               <div aria-hidden="true" className="explore-depth-axis">
