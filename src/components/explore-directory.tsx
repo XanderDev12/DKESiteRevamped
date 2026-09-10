@@ -1,4 +1,13 @@
+'use client';
+
 import Link from 'next/link';
+import {
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type FocusEvent,
+} from 'react';
 
 import { Container } from '@/components/ui/container';
 import { cn } from '@/lib/cn';
@@ -8,154 +17,303 @@ interface ExploreDirectoryProps {
   items: readonly NavigationItem[];
 }
 
+type DepthCardStyle = CSSProperties & {
+  '--depth-base-angle'?: string;
+};
+
 const accentThemes: Record<
   NavigationAccent,
   {
-    action: string;
+    accent: string;
+    hover: string;
     number: string;
-    rule: string;
-    wash: string;
   }
 > = {
   blue: {
-    action: 'bg-brand-blue text-white group-hover:bg-brand-red',
+    accent: 'bg-brand-blue',
+    hover: 'hover:border-brand-blue/60',
     number: 'text-brand-blue',
-    rule: 'bg-brand-blue',
-    wash: 'from-brand-blue/[0.09]',
   },
   gold: {
-    action:
-      'bg-brand-gold text-brand-blue-deep group-hover:bg-brand-blue-deep group-hover:text-white',
+    accent: 'bg-brand-gold',
+    hover: 'hover:border-brand-gold/70',
     number: 'text-brand-red',
-    rule: 'bg-brand-gold',
-    wash: 'from-brand-gold/[0.16]',
   },
   red: {
-    action: 'bg-brand-red text-white group-hover:bg-brand-blue',
+    accent: 'bg-brand-red',
+    hover: 'hover:border-brand-red/65',
     number: 'text-brand-red',
-    rule: 'bg-brand-red',
-    wash: 'from-brand-red/[0.09]',
   },
 };
 
+const depthMediaQuery =
+  '(min-width: 64rem) and (min-height: 50rem) and (pointer: fine) and (prefers-reduced-motion: no-preference)';
+
+function clamp(value: number, minimum: number, maximum: number) {
+  return Math.min(Math.max(value, minimum), maximum);
+}
+
 export function ExploreDirectory({ items }: ExploreDirectoryProps) {
+  const regionRef = useRef<HTMLDivElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
+  const exitRef = useRef<HTMLDivElement>(null);
+  const focusWithinRef = useRef(false);
+  const activeIndexRef = useRef(0);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [depthReady, setDepthReady] = useState(false);
+
+  const itemCount = items.length;
+  const supportsItemCount = itemCount >= 3 && itemCount <= 7;
+  const angleStep = itemCount > 0 ? 360 / itemCount : 0;
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia(depthMediaQuery);
+    const supportsDepth =
+      CSS.supports('perspective', '1000px') &&
+      CSS.supports('transform-style', 'preserve-3d');
+
+    const syncPresentation = () => {
+      setDepthReady(mediaQuery.matches && supportsDepth && supportsItemCount);
+    };
+
+    syncPresentation();
+    mediaQuery.addEventListener('change', syncPresentation);
+
+    return () => mediaQuery.removeEventListener('change', syncPresentation);
+  }, [supportsItemCount]);
+
+  useEffect(() => {
+    const region = regionRef.current;
+    const stage = stageRef.current;
+
+    if (!depthReady || !region || !stage || itemCount < 2) {
+      region?.style.removeProperty('--depth-rotation');
+      activeIndexRef.current = 0;
+      setActiveIndex(0);
+      return;
+    }
+
+    let animationFrame = 0;
+
+    const updateDepth = () => {
+      animationFrame = 0;
+
+      if (focusWithinRef.current) {
+        return;
+      }
+
+      const regionRect = region.getBoundingClientRect();
+      const stickyTop =
+        Number.parseFloat(window.getComputedStyle(stage).top) || 0;
+      const exitHeight = exitRef.current?.offsetHeight ?? 0;
+      const travel = Math.max(
+        region.offsetHeight - stage.offsetHeight - exitHeight,
+        1,
+      );
+      const progress = clamp((stickyTop - regionRect.top) / travel, 0, 1);
+      const position = progress * (itemCount - 1);
+      const degrees = position * angleStep;
+      const nextActiveIndex = clamp(Math.round(position), 0, itemCount - 1);
+
+      region.style.setProperty('--depth-rotation', `${-degrees}deg`);
+
+      if (nextActiveIndex !== activeIndexRef.current) {
+        activeIndexRef.current = nextActiveIndex;
+        setActiveIndex(nextActiveIndex);
+      }
+    };
+
+    const scheduleUpdate = () => {
+      if (animationFrame === 0) {
+        animationFrame = window.requestAnimationFrame(updateDepth);
+      }
+    };
+
+    window.addEventListener('scroll', scheduleUpdate, { passive: true });
+    window.addEventListener('resize', scheduleUpdate);
+
+    const resizeObserver = new ResizeObserver(scheduleUpdate);
+    resizeObserver.observe(region);
+    resizeObserver.observe(stage);
+    scheduleUpdate();
+
+    return () => {
+      window.cancelAnimationFrame(animationFrame);
+      window.removeEventListener('scroll', scheduleUpdate);
+      window.removeEventListener('resize', scheduleUpdate);
+      resizeObserver.disconnect();
+    };
+  }, [angleStep, depthReady, itemCount]);
+
+  const handleLinkFocus = (index: number) => {
+    focusWithinRef.current = true;
+    activeIndexRef.current = index;
+    regionRef.current?.style.setProperty(
+      '--depth-rotation',
+      `${index * -angleStep}deg`,
+    );
+    setActiveIndex(index);
+  };
+
+  const handleNavBlur = (event: FocusEvent<HTMLElement>) => {
+    if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+      focusWithinRef.current = false;
+    }
+  };
+
+  if (itemCount === 0) {
+    return null;
+  }
+
   return (
     <section
       aria-labelledby="explore-heading"
-      className="relative isolate z-10 -mt-px bg-background pb-20 sm:pb-28 lg:pb-32"
+      className="explore-depth-section relative isolate -mt-px bg-brand-blue-deep text-white"
+      data-depth-ready={depthReady ? 'true' : 'false'}
     >
-      <div className="explore-flow-intro relative">
-        <div
-          aria-hidden="true"
-          className="explore-flow-grid pointer-events-none absolute inset-0"
-        />
-
-        <Container className="relative pt-20 pb-12 sm:pt-24 sm:pb-16 lg:pt-28 lg:pb-20">
-          <header className="grid gap-8 border-b border-white/20 pb-10 sm:pb-12 lg:grid-cols-[minmax(12rem,0.55fr)_minmax(0,1.45fr)] lg:items-end lg:gap-16">
-            <p className="flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.22em] text-brand-gold">
-              <span className="h-px w-10 bg-brand-red" aria-hidden="true" />
-              Explore the chapter
-            </p>
-            <div>
-              <h2
-                id="explore-heading"
-                className="max-w-4xl font-display text-[clamp(3.5rem,6.5vw,6.5rem)] font-medium leading-[0.88] tracking-[-0.055em] text-white text-balance"
-              >
-                Find your way through{' '}
-                <span className="italic text-brand-gold">Psi Omega.</span>
-              </h2>
-              <p className="mt-7 max-w-xl text-lg leading-8 text-white/70">
-                Members, history, events, alumni connections, and the people to
-                contact.
-              </p>
-            </div>
-          </header>
-        </Container>
-      </div>
-
-      <div
-        aria-hidden="true"
-        className="explore-flow-transition relative h-[clamp(8rem,18vw,14rem)] overflow-hidden"
+      <a
+        href="#site-footer"
+        className="sr-only z-40 rounded-full bg-brand-gold px-5 py-3 font-semibold text-brand-blue-deep shadow-xl focus:not-sr-only focus:absolute focus:left-5 focus:top-5"
       >
-        <div className="absolute -right-20 -top-24 size-72 rounded-full border border-brand-gold/25 sm:size-96" />
-      </div>
+        Skip destinations
+      </a>
 
-      <Container>
-        {items.length > 0 ? (
-          <nav aria-label="Explore Psi Omega">
-            <ol className="m-0 list-none border-y border-brand-blue/15 p-0">
-              {items.map((item, index) => {
-                const theme = accentThemes[item.accent];
-                const position = String(index + 1).padStart(2, '0');
-                const descriptionId = `explore-${index + 1}-description`;
+      <div ref={regionRef} className="explore-depth-region">
+        <div ref={stageRef} className="explore-depth-stage">
+          <div
+            aria-hidden="true"
+            className="explore-depth-grid pointer-events-none absolute inset-0"
+          />
+          <div
+            aria-hidden="true"
+            className="explore-depth-glow pointer-events-none absolute inset-0"
+          />
 
-                return (
-                  <li
-                    key={item.href}
-                    className="explore-directory-item group relative grid min-h-[clamp(13rem,25svh,17rem)] border-b border-brand-blue/15 px-4 py-8 last:border-b-0 focus-within:ring-4 focus-within:ring-inset focus-within:ring-brand-blue sm:px-7 sm:py-10"
-                  >
-                    <div
-                      aria-hidden="true"
-                      className={cn(
-                        'pointer-events-none absolute inset-0 bg-gradient-to-r to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100 group-focus-within:opacity-100 motion-reduce:transition-none',
-                        theme.wash,
-                      )}
-                    />
-                    <span
-                      aria-hidden="true"
-                      className={cn(
-                        'pointer-events-none absolute inset-y-8 left-0 w-1 rounded-r-full transition-[width] duration-300 group-hover:w-2 group-focus-within:w-2 motion-reduce:transition-none',
-                        theme.rule,
-                      )}
-                    />
+          <Container className="explore-depth-layout relative">
+            <header className="explore-depth-copy">
+              <div>
+                <p className="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.24em] text-brand-gold sm:text-sm">
+                  <span className="h-px w-9 bg-brand-red" aria-hidden="true" />
+                  Chapter directory
+                </p>
+                <h2
+                  id="explore-heading"
+                  className="mt-5 max-w-md font-display text-[clamp(3rem,4.5vw,4.75rem)] font-medium leading-[0.9] tracking-[-0.05em] text-balance"
+                >
+                  Explore{' '}
+                  <span className="italic text-brand-gold">Psi Omega.</span>
+                </h2>
+              </div>
 
-                    <div className="grid self-center gap-8 sm:grid-cols-[4rem_minmax(0,1fr)] sm:gap-6 lg:grid-cols-[4rem_minmax(0,1fr)_auto] lg:items-center">
-                      <p
-                        aria-hidden="true"
-                        className={cn(
-                          'self-start font-mono text-sm font-semibold tracking-[0.18em] sm:pt-3 lg:self-center lg:pt-0',
-                          theme.number,
-                        )}
+              <div className="explore-depth-cue">
+                <p className="text-sm leading-6 text-white/58">
+                  Scroll to bring each destination forward.
+                </p>
+                <p
+                  aria-hidden="true"
+                  className="mt-3 font-mono text-xs font-semibold tracking-[0.2em] text-brand-gold"
+                >
+                  {String(activeIndex + 1).padStart(2, '0')} /{' '}
+                  {String(itemCount).padStart(2, '0')}
+                </p>
+              </div>
+            </header>
+
+            <nav
+              aria-label="Explore Psi Omega"
+              aria-describedby="explore-depth-instructions"
+              className="explore-depth-nav"
+              onBlurCapture={handleNavBlur}
+            >
+              <p id="explore-depth-instructions" className="sr-only">
+                Choose from five chapter destinations. On large screens, focus
+                brings each link to the front of a decorative depth carousel.
+              </p>
+
+              <div aria-hidden="true" className="explore-depth-axis">
+                <span />
+                <span />
+              </div>
+
+              <ol className="explore-depth-deck m-0 list-none p-0">
+                {items.map((item, index) => {
+                  const theme = accentThemes[item.accent];
+                  const position = String(index + 1).padStart(2, '0');
+                  const descriptionId = `explore-${index + 1}-description`;
+                  const titleId = `explore-${index + 1}-title`;
+                  const baseAngle = index * angleStep;
+                  const isActive = index === activeIndex;
+
+                  return (
+                    <li
+                      key={item.href}
+                      className="explore-depth-item"
+                      data-active={isActive ? 'true' : 'false'}
+                      style={
+                        {
+                          '--depth-base-angle': `${baseAngle}deg`,
+                        } as DepthCardStyle
+                      }
+                    >
+                      <Link
+                        href={item.href}
+                        aria-labelledby={titleId}
+                        aria-describedby={descriptionId}
+                        className={cn('explore-depth-link group', theme.hover)}
+                        onFocus={() => handleLinkFocus(index)}
                       >
-                        {position}
-                      </p>
-
-                      <div>
-                        <h3 className="font-display text-[clamp(3rem,5.25vw,5.25rem)] font-medium leading-[0.88] tracking-[-0.05em] text-brand-blue transition-colors duration-300 group-hover:text-brand-red group-focus-within:text-brand-red motion-reduce:transition-none">
-                          {item.label}
-                        </h3>
+                        <span
+                          aria-hidden="true"
+                          className={cn('explore-depth-accent', theme.accent)}
+                        />
+                        <span className="flex items-start justify-between gap-5">
+                          <span
+                            id={titleId}
+                            className="explore-depth-title font-display font-medium tracking-[-0.045em]"
+                          >
+                            {item.label}
+                          </span>
+                          <span
+                            aria-hidden="true"
+                            className={cn(
+                              'font-mono text-[0.68rem] font-bold tracking-[0.18em]',
+                              theme.number,
+                            )}
+                          >
+                            {position}
+                          </span>
+                        </span>
                         <p
                           id={descriptionId}
-                          className="mt-4 max-w-lg text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8"
+                          className="explore-depth-description mt-4 max-w-md text-base leading-7"
                         >
                           {item.description}
                         </p>
-                      </div>
-
-                      <Link
-                        href={item.href}
-                        aria-describedby={descriptionId}
-                        className={cn(
-                          "inline-flex min-h-12 w-fit items-center gap-3 rounded-full px-5 text-sm font-semibold transition-all duration-300 after:absolute after:inset-0 after:content-[''] focus-visible:outline-none motion-reduce:transition-none sm:col-start-2 lg:col-start-auto lg:justify-self-end",
-                          theme.action,
-                        )}
-                      >
-                        Explore {item.label}
                         <span
                           aria-hidden="true"
-                          className="text-lg transition-transform duration-300 group-hover:translate-x-1 motion-reduce:transform-none motion-reduce:transition-none"
+                          className="explore-depth-action mt-5 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.15em]"
                         >
-                          ↗
+                          Explore {item.label}
+                          <span className="text-base transition-transform duration-200 group-hover:translate-x-1">
+                            ↗
+                          </span>
                         </span>
                       </Link>
-                    </div>
-                  </li>
-                );
-              })}
-            </ol>
-          </nav>
-        ) : null}
-      </Container>
+                    </li>
+                  );
+                })}
+              </ol>
+            </nav>
+          </Container>
+        </div>
+
+        <div aria-hidden="true" className="explore-depth-steps">
+          {items.slice(1).map((item) => (
+            <div key={item.href} className="explore-depth-step" />
+          ))}
+          <div ref={exitRef} className="explore-depth-exit" />
+        </div>
+      </div>
     </section>
   );
 }

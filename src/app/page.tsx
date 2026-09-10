@@ -37,15 +37,15 @@ export default function HomePage() {
           </div>
 
           <div className="hero-mark relative mx-auto w-full max-w-sm lg:mr-0">
+            <div
+              aria-hidden="true"
+              className="absolute -inset-5 rotate-3 rounded-[2.5rem] border border-brand-gold/30 sm:-inset-7"
+            />
+            <div
+              aria-hidden="true"
+              className="absolute -bottom-7 -left-7 size-32 rounded-full bg-brand-red/70 blur-3xl"
+            />
             <div className="brand-mark-float relative">
-              <div
-                aria-hidden="true"
-                className="absolute -inset-5 rotate-3 rounded-[2.5rem] border border-brand-gold/30 sm:-inset-7"
-              />
-              <div
-                aria-hidden="true"
-                className="absolute -bottom-7 -left-7 size-32 rounded-full bg-brand-red/70 blur-3xl"
-              />
               <figure className="relative overflow-hidden rounded-[2rem] border border-white/15 bg-surface-soft p-7 shadow-emblem sm:p-9">
                 <div
                   aria-hidden="true"
