@@ -1,6 +1,6 @@
 # DKESiteRevamped
 
-An intentionally content-neutral React and TypeScript scaffold for a future fraternity website. It includes the symbol supplied for this rebuild, but no names, dates, events, historical claims, or copy from the previous site.
+An intentionally content-neutral React and TypeScript scaffold for the Psi Omega Chapter of Delta Kappa Epsilon at RPI. It includes the symbol supplied for this rebuild, but no names, dates, events, historical claims, contact details, or copy from the previous site.
 
 ## Brand foundation
 
@@ -18,18 +18,22 @@ An intentionally content-neutral React and TypeScript scaffold for a future frat
 
 ## Prepared sections
 
-- Brothers and chapter leadership
+- Current members and chapter leadership
 - Verified chapter history
-- Current and upcoming events
+- A shared event calendar with audience-aware records
+- An alumni hub for alumni events, donations, involvement, and the alumni board
+- Verified ways to contact current members
 
-Each section has a route, typed model, empty data adapter, and presentation component. The adapters currently return empty arrays by design and can later be replaced by approved static content, a CMS, or another data source without restructuring the page layer.
+Each data-backed section has a typed model, empty data adapter, and presentation component. The adapters currently return empty arrays by design and can later be replaced by approved static content, a CMS, or another data source without restructuring the page layer.
 
 ## Project structure
 
 ```text
 app/
-  brothers/       Brothers and leadership route
-  events/         Events route
+  alumni/         Alumni hub and anchored subsections
+  brothers/       Current members and leadership route
+  contact/        Current-member contact route
+  events/         Shared event calendar route
   history/        History route
   layout.tsx      Shared application shell and metadata
   page.tsx        Content-neutral starting page
@@ -39,8 +43,10 @@ components/
   page-hero.tsx    Shared interior-page introduction
   site-*.tsx       Responsive navigation shell
 features/
+  alumni/         Board and alumni-resource adapters
   brothers/       Types, data adapter, and list UI
-  events/         Types, data adapter, and list UI
+  contact/        Verified contact-channel adapter
+  events/         Audience-aware calendar model and UI
   history/        Types, data adapter, and timeline UI
 lib/
   navigation.ts    Shared route metadata
@@ -68,4 +74,4 @@ npm run build
 
 Begin with the types in each `features/*/types.ts` module. Add a verified source through the corresponding `data.ts` adapter, or replace that adapter with a CMS/API integration. Page components already consume those adapters and provide intentional empty states until records exist.
 
-The feature boundaries are ready to grow independently: brothers can be grouped by leadership role or class year, history can be divided into sourced eras, and events can gain featured records, filters, or calendar views without changing the shared site shell.
+The feature boundaries are ready to grow independently: members can be grouped by leadership role or class year, history can be divided into sourced eras, and the shared event source can power both the full calendar and alumni-only events. Alumni anchors can become dedicated routes later without changing their data adapters.

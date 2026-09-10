@@ -11,7 +11,7 @@ export const contentAreas = [
   {
     accent: 'blue',
     href: '/brothers',
-    label: 'Brothers',
+    label: 'Members',
     description: 'Meet chapter members and leadership.',
   },
   {
@@ -23,12 +23,56 @@ export const contentAreas = [
   {
     accent: 'red',
     href: '/events',
-    label: 'Events',
-    description: 'See what is happening and what is coming up.',
+    label: 'Calendar',
+    description: 'Find chapter events, important dates, and gatherings.',
+  },
+  {
+    accent: 'gold',
+    href: '/alumni',
+    label: 'Alumni',
+    description: 'Stay connected through events, giving, and involvement.',
+  },
+  {
+    accent: 'red',
+    href: '/contact',
+    label: 'Contact',
+    description: 'Reach the current members of Psi Omega.',
   },
 ] as const satisfies readonly NavigationItem[];
 
+export const alumniAreas = [
+  {
+    accent: 'red',
+    href: '/alumni#events',
+    label: 'Alumni Events',
+    description: 'Find gatherings and dates intended for alumni.',
+  },
+  {
+    accent: 'gold',
+    href: '/alumni#donations',
+    label: 'Donations',
+    description: 'Access verified ways to support the chapter.',
+  },
+  {
+    accent: 'blue',
+    href: '/alumni#involvement',
+    label: 'Involvement',
+    description: 'Explore ways to volunteer, mentor, and reconnect.',
+  },
+  {
+    accent: 'gold',
+    href: '/alumni#board',
+    label: 'Alumni Board',
+    description: 'Meet the alumni serving the chapter community.',
+  },
+] as const satisfies readonly NavigationItem[];
+
+export const headerNavigation = contentAreas.map(({ href, label }) => ({
+  href,
+  label,
+}));
+
 export const primaryNavigation = [
   { href: '/', label: 'Home' },
-  ...contentAreas.map(({ href, label }) => ({ href, label })),
+  ...headerNavigation,
 ] as const;

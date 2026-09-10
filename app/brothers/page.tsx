@@ -5,7 +5,7 @@ import { BrotherList } from '@/features/brothers/brother-list';
 import { getBrothers } from '@/features/brothers/data';
 
 export const metadata: Metadata = {
-  title: 'Brothers',
+  title: 'Current Members',
 };
 
 export default async function BrothersPage() {
@@ -16,7 +16,7 @@ export default async function BrothersPage() {
       accent="blue"
       eyebrow="The chapter"
       marker="01"
-      title="Brothers & Leadership"
+      title="Current Members & Leadership"
       description="Meet the members and leaders who make up the current chapter."
     >
       <BrotherList brothers={brothers} />

@@ -3,6 +3,7 @@ import { ExploreCard } from '@/components/explore-card';
 import { ButtonLink } from '@/components/ui/button-link';
 import { Container } from '@/components/ui/container';
 import { contentAreas } from '@/lib/navigation';
+import { siteConfig } from '@/lib/site-config';
 
 export default function HomePage() {
   return (
@@ -15,22 +16,22 @@ export default function HomePage() {
           <div className="hero-copy max-w-3xl">
             <p className="mb-7 flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.24em] text-brand-gold">
               <span className="h-px w-10 bg-brand-red" aria-hidden="true" />
-              Delta Kappa Epsilon
+              {siteConfig.fraternityName} at {siteConfig.institutionName}
             </p>
             <h1 className="font-display text-[clamp(4rem,10vw,8rem)] font-medium leading-[0.86] tracking-[-0.055em] text-balance">
-              The chapter,
+              {siteConfig.chapterName},
               <span className="block italic text-brand-gold">connected.</span>
             </h1>
             <p className="mt-8 max-w-xl text-lg leading-8 text-white/72 sm:text-xl sm:leading-9">
-              Meet the brothers, explore our history, and keep up with what is
-              happening next.
+              Meet the active chapter, explore our history, and stay connected
+              through events and alumni life.
             </p>
             <div className="mt-10 flex flex-wrap gap-3">
-              <ButtonLink href="/brothers" variant="gold">
-                Meet the chapter
+              <ButtonLink href="/events" variant="gold">
+                View the calendar
               </ButtonLink>
-              <ButtonLink href="/events" variant="outline">
-                View events
+              <ButtonLink href="/alumni" variant="outline">
+                Alumni hub
               </ButtonLink>
             </div>
           </div>
@@ -52,7 +53,7 @@ export default function HomePage() {
               <BrandMark priority sizes="(min-width: 1024px) 22rem, 70vw" />
             </figure>
             <div className="absolute -bottom-5 -right-4 rounded-full border-4 border-brand-blue-deep bg-brand-red px-5 py-3 font-display text-2xl font-semibold text-white shadow-xl sm:-right-7">
-              ΔΚΕ
+              {siteConfig.shortName}
             </div>
           </div>
         </Container>
@@ -70,7 +71,7 @@ export default function HomePage() {
             </h2>
           </div>
 
-          <div className="mt-10 grid gap-5 lg:grid-cols-3">
+          <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
             {contentAreas.map((area, index) => (
               <ExploreCard
                 key={area.href}

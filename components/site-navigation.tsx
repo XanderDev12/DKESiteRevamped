@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
 import { cn } from '@/lib/cn';
-import { primaryNavigation } from '@/lib/navigation';
+import { headerNavigation, primaryNavigation } from '@/lib/navigation';
 
 function isCurrentPath(pathname: string, href: string) {
   return href === '/'
@@ -34,9 +34,9 @@ export function SiteNavigation() {
 
   return (
     <>
-      <nav aria-label="Primary navigation" className="hidden md:block">
+      <nav aria-label="Primary navigation" className="hidden lg:block">
         <ul className="flex items-center gap-1">
-          {primaryNavigation.map((item) => {
+          {headerNavigation.map((item) => {
             const isCurrent = isCurrentPath(pathname, item.href);
 
             return (
@@ -65,7 +65,7 @@ export function SiteNavigation() {
         aria-controls="mobile-navigation"
         aria-label={isOpen ? 'Close menu' : 'Open menu'}
         onClick={() => setIsOpen((open) => !open)}
-        className="inline-flex size-11 items-center justify-center rounded-full border border-white/20 text-white transition-colors hover:border-brand-gold hover:text-brand-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold md:hidden"
+        className="inline-flex size-11 items-center justify-center rounded-full border border-white/20 text-white transition-colors hover:border-brand-gold hover:text-brand-gold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold lg:hidden"
       >
         <span className="relative block h-4 w-5" aria-hidden="true">
           <span
@@ -87,7 +87,7 @@ export function SiteNavigation() {
         id="mobile-navigation"
         aria-label="Mobile navigation"
         className={cn(
-          'absolute inset-x-0 top-full border-y border-white/10 bg-brand-blue-deep px-5 py-4 shadow-2xl sm:px-8 md:hidden',
+          'absolute inset-x-0 top-full border-y border-white/10 bg-brand-blue-deep px-5 py-4 shadow-2xl sm:px-8 lg:hidden',
           !isOpen && 'hidden',
         )}
       >

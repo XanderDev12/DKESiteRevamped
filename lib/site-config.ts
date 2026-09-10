@@ -1,8 +1,12 @@
 export const siteConfig = {
-  name: 'Delta Kappa Epsilon',
+  name: 'Psi Omega Chapter at RPI',
+  fraternityName: 'Delta Kappa Epsilon',
+  chapterName: 'Psi Omega',
+  institutionName: 'RPI',
   shortName: 'ΔΚΕ',
-  chapterLabel: 'Chapter',
-  description: 'A home for chapter life, history, and events.',
+  chapterLabel: 'Psi Omega · RPI',
+  description:
+    'The home of the Psi Omega Chapter of Delta Kappa Epsilon at RPI.',
   symbol: {
     src: '/fraternity-symbol.png',
     width: 1433,
