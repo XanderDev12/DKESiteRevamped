@@ -14,7 +14,7 @@ An intentionally content-neutral React and TypeScript scaffold for the Psi Omega
 - Shared semantic tokens control color, radius, shadow, typography, and motion.
 - Reusable containers, buttons, surfaces, page heroes, navigation, and brand components keep new routes consistent.
 - The homepage uses a continuous hero-to-directory transition with compact destination rows that rise through native document flow; mobile, zoomed, and reduced-motion layouts fall back to a straightforward list.
-- Motion is ornamental and progressive; navigation remains usable without it, and transitions are disabled when reduced motion is requested.
+- Motion is ornamental and progressive; navigation remains usable without it, and scroll-linked and transform motion is disabled when reduced motion is requested.
 - Public site identity is centralized in `src/lib/site-config.ts` so chapter-specific naming can be updated once.
 
 ## Prepared sections
@@ -38,7 +38,7 @@ src/
     events/         Shared event calendar route
     history/        History route
     layout.tsx      Shared application shell and metadata
-    page.tsx        Content-neutral starting page
+    page.tsx        Homepage hero and chapter directory
   components/
     brand/           Approved identity components
     ui/              Reusable layout and interaction primitives

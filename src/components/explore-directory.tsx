@@ -42,7 +42,7 @@ export function ExploreDirectory({ items }: ExploreDirectoryProps) {
   return (
     <section
       aria-labelledby="explore-heading"
-      className="explore-flow relative isolate z-10 -mt-px pb-20 sm:pb-28 lg:pb-32"
+      className="relative isolate z-10 -mt-px bg-background pb-20 sm:pb-28 lg:pb-32"
     >
       <div className="explore-flow-intro relative">
         <div
@@ -92,7 +92,7 @@ export function ExploreDirectory({ items }: ExploreDirectoryProps) {
                 return (
                   <li
                     key={item.href}
-                    className="explore-directory-item group relative grid min-h-[clamp(13rem,25svh,17rem)] scroll-mt-[calc(var(--site-header-height)+1rem)] border-b border-brand-blue/15 px-4 py-8 last:border-b-0 focus-within:ring-4 focus-within:ring-inset focus-within:ring-brand-blue sm:px-7 sm:py-10"
+                    className="explore-directory-item group relative grid min-h-[clamp(13rem,25svh,17rem)] border-b border-brand-blue/15 px-4 py-8 last:border-b-0 focus-within:ring-4 focus-within:ring-inset focus-within:ring-brand-blue sm:px-7 sm:py-10"
                   >
                     <div
                       aria-hidden="true"
@@ -136,7 +136,7 @@ export function ExploreDirectory({ items }: ExploreDirectoryProps) {
                         href={item.href}
                         aria-describedby={descriptionId}
                         className={cn(
-                          "inline-flex min-h-12 w-fit items-center gap-3 rounded-full px-5 text-sm font-semibold transition-all duration-300 after:absolute after:inset-0 after:content-[''] focus-visible:outline-none motion-reduce:transform-none motion-reduce:transition-none sm:col-start-2 lg:col-start-auto lg:justify-self-end",
+                          "inline-flex min-h-12 w-fit items-center gap-3 rounded-full px-5 text-sm font-semibold transition-all duration-300 after:absolute after:inset-0 after:content-[''] focus-visible:outline-none motion-reduce:transition-none sm:col-start-2 lg:col-start-auto lg:justify-self-end",
                           theme.action,
                         )}
                       >
