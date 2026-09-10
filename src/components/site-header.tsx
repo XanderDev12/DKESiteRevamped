@@ -8,7 +8,7 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 border-b border-white/10 bg-brand-blue-deep/95 text-white shadow-header backdrop-blur-xl">
       <div aria-hidden="true" className="brand-stripe h-1" />
-      <Container className="relative flex min-h-[4.75rem] items-center justify-between gap-6">
+      <Container className="relative flex min-h-[4.6875rem] items-center justify-between gap-6">
         <Link
           href="/"
           aria-label={`${siteConfig.name} home`}

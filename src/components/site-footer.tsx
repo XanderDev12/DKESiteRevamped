@@ -15,7 +15,7 @@ const alumniNavigation = [
 
 export function SiteFooter() {
   return (
-    <footer className="bg-brand-blue-deep text-white">
+    <footer className="relative z-20 bg-brand-blue-deep text-white">
       <div aria-hidden="true" className="brand-stripe h-1" />
       <Container className="grid gap-12 py-14 sm:py-16 md:grid-cols-[1.2fr_0.55fr_0.65fr]">
         <div className="max-w-md">

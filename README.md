@@ -5,7 +5,7 @@ An intentionally content-neutral React and TypeScript scaffold for the Psi Omega
 ## Brand foundation
 
 - The approved fraternity symbol is stored at `public/fraternity-symbol.png`.
-- Blue (`#221E73`), gold (`#FDB710`), and red (`#B22117`) are defined as shared theme tokens in `app/globals.css`.
+- Blue (`#221E73`), gold (`#FDB710`), and red (`#B22117`) are defined as shared theme tokens in `src/app/globals.css`.
 - The layout uses those colors without retaining the previous site's broader visual design.
 
 ## Design system
@@ -13,8 +13,9 @@ An intentionally content-neutral React and TypeScript scaffold for the Psi Omega
 - Geist handles interface and body text; Newsreader provides the editorial display voice.
 - Shared semantic tokens control color, radius, shadow, typography, and motion.
 - Reusable containers, buttons, surfaces, page heroes, navigation, and brand components keep new routes consistent.
+- The homepage uses native sticky positioning to layer its destination panels on larger viewports; mobile, zoomed, and reduced-motion layouts fall back to normal document flow.
 - Motion is ornamental, CSS-only, and disabled when reduced motion is requested.
-- Public site identity is centralized in `lib/site-config.ts` so chapter-specific naming can be updated once.
+- Public site identity is centralized in `src/lib/site-config.ts` so chapter-specific naming can be updated once.
 
 ## Prepared sections
 
@@ -29,28 +30,30 @@ Each data-backed section has a typed model, empty data adapter, and presentation
 ## Project structure
 
 ```text
-app/
-  alumni/         Alumni hub and anchored subsections
-  brothers/       Current members and leadership route
-  contact/        Current-member contact route
-  events/         Shared event calendar route
-  history/        History route
-  layout.tsx      Shared application shell and metadata
-  page.tsx        Content-neutral starting page
-components/
-  brand/           Approved identity components
-  ui/              Reusable layout and interaction primitives
-  page-hero.tsx    Shared interior-page introduction
-  site-*.tsx       Responsive navigation shell
-features/
-  alumni/         Board and alumni-resource adapters
-  brothers/       Types, data adapter, and list UI
-  contact/        Verified contact-channel adapter
-  events/         Audience-aware calendar model and UI
-  history/        Types, data adapter, and timeline UI
-lib/
-  navigation.ts    Shared route metadata
-  site-config.ts   Public identity and metadata
+src/
+  app/
+    alumni/         Alumni hub and anchored subsections
+    brothers/       Current members and leadership route
+    contact/        Current-member contact route
+    events/         Shared event calendar route
+    history/        History route
+    layout.tsx      Shared application shell and metadata
+    page.tsx        Content-neutral starting page
+  components/
+    brand/           Approved identity components
+    ui/              Reusable layout and interaction primitives
+    explore-panel.tsx Homepage destination panel and stack presentation
+    page-hero.tsx    Shared interior-page introduction
+    site-*.tsx       Responsive navigation shell
+  features/
+    alumni/         Board and alumni-resource adapters
+    brothers/       Types, data adapter, and list UI
+    contact/        Verified contact-channel adapter
+    events/         Audience-aware calendar model and UI
+    history/        Types, data adapter, and timeline UI
+  lib/
+    navigation.ts    Shared route metadata
+    site-config.ts   Public identity and metadata
 ```
 
 ## Development
@@ -72,6 +75,6 @@ npm run build
 
 ## Adding content later
 
-Begin with the types in each `features/*/types.ts` module. Add a verified source through the corresponding `data.ts` adapter, or replace that adapter with a CMS/API integration. Page components already consume those adapters and provide intentional empty states until records exist.
+Begin with the types in each `src/features/*/types.ts` module. Add a verified source through the corresponding `data.ts` adapter, or replace that adapter with a CMS/API integration. Page components already consume those adapters and provide intentional empty states until records exist.
 
 The feature boundaries are ready to grow independently: members can be grouped by leadership role or class year, history can be divided into sourced eras, and the shared event source can power both the full calendar and alumni-only events. Alumni anchors can become dedicated routes later without changing their data adapters.

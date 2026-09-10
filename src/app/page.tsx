@@ -1,5 +1,5 @@
 import { BrandMark } from '@/components/brand/brand-mark';
-import { ExploreCard } from '@/components/explore-card';
+import { ExplorePanel } from '@/components/explore-panel';
 import { ButtonLink } from '@/components/ui/button-link';
 import { Container } from '@/components/ui/container';
 import { contentAreas } from '@/lib/navigation';
@@ -12,7 +12,7 @@ export default function HomePage() {
         <div aria-hidden="true" className="hero-field absolute inset-0" />
         <div aria-hidden="true" className="hero-grid absolute inset-0" />
 
-        <Container className="relative grid items-center gap-14 py-16 sm:py-20 lg:grid-cols-[minmax(0,1.12fr)_minmax(20rem,0.72fr)] lg:gap-20 lg:py-24">
+        <Container className="relative grid min-h-[calc(100svh-var(--site-header-height))] items-center gap-14 py-16 sm:py-20 lg:grid-cols-[minmax(0,1.12fr)_minmax(20rem,0.72fr)] lg:gap-20 lg:py-24">
           <div className="hero-copy max-w-3xl">
             <p className="mb-7 flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.24em] text-brand-gold">
               <span className="h-px w-10 bg-brand-red" aria-hidden="true" />
@@ -59,31 +59,39 @@ export default function HomePage() {
         </Container>
       </section>
 
-      <section className="relative overflow-hidden py-20 sm:py-28">
-        <div aria-hidden="true" className="section-glow absolute inset-0" />
-        <Container className="relative">
-          <div className="grid gap-5 border-b border-border pb-10 lg:grid-cols-[0.75fr_1.25fr] lg:items-end">
-            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-brand-red">
-              Explore the chapter
-            </p>
-            <h2 className="max-w-3xl font-display text-5xl font-medium leading-[0.96] tracking-[-0.04em] text-brand-blue sm:text-6xl">
-              One place for the people, the story, and what comes next.
-            </h2>
-          </div>
+      <section
+        aria-labelledby="explore-heading"
+        className="relative z-10 bg-background focus-within:z-30"
+      >
+        <div className="relative overflow-hidden py-16 sm:py-20">
+          <div aria-hidden="true" className="section-glow absolute inset-0" />
+          <Container className="relative">
+            <div className="grid gap-5 lg:grid-cols-[0.75fr_1.25fr] lg:items-end">
+              <p className="text-sm font-semibold uppercase tracking-[0.22em] text-brand-red">
+                Scroll to explore
+              </p>
+              <h2
+                id="explore-heading"
+                className="max-w-3xl font-display text-5xl font-medium leading-[0.96] tracking-[-0.04em] text-brand-blue sm:text-6xl"
+              >
+                Each part of Psi Omega, one layer at a time.
+              </h2>
+            </div>
+          </Container>
+        </div>
 
-          <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {contentAreas.map((area, index) => (
-              <ExploreCard
-                key={area.href}
-                accent={area.accent}
-                description={area.description}
-                href={area.href}
-                index={index + 1}
-                title={area.label}
-              />
-            ))}
-          </div>
-        </Container>
+        <ol className="scroll-stack-list m-0 list-none p-0">
+          {contentAreas.map((area, index) => (
+            <ExplorePanel
+              key={area.href}
+              description={area.description}
+              href={area.href}
+              index={index + 1}
+              title={area.label}
+              total={contentAreas.length}
+            />
+          ))}
+        </ol>
       </section>
     </>
   );
