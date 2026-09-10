@@ -66,6 +66,7 @@
 
   html {
     @apply scroll-smooth font-sans;
+    scroll-padding-block-start: calc(var(--site-header-height) + 1rem);
   }
 
   body {
@@ -90,6 +91,7 @@
 
   .hero-field {
     background:
+      linear-gradient(to bottom, transparent 64%, var(--brand-blue-deep) 100%),
       radial-gradient(
         circle at 78% 22%,
         rgb(253 183 16 / 22%),
@@ -101,6 +103,43 @@
         transparent 30rem
       ),
       linear-gradient(135deg, var(--brand-blue-deep), var(--brand-blue) 70%);
+  }
+
+  .explore-flow {
+    background: var(--background);
+  }
+
+  .explore-flow-intro {
+    background:
+      radial-gradient(
+        circle at 12% 5rem,
+        rgb(253 183 16 / 13%),
+        transparent 25rem
+      ),
+      radial-gradient(
+        circle at 94% 14rem,
+        rgb(178 33 23 / 12%),
+        transparent 21rem
+      ),
+      linear-gradient(to bottom, var(--brand-blue-deep), var(--brand-blue));
+  }
+
+  .explore-flow-transition {
+    background: linear-gradient(
+      to bottom,
+      var(--brand-blue),
+      color-mix(in srgb, var(--brand-blue) 48%, var(--background)) 52%,
+      var(--background)
+    );
+  }
+
+  .explore-flow-grid {
+    background-image:
+      linear-gradient(rgb(255 255 255 / 5%) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(255 255 255 / 5%) 1px, transparent 1px);
+    background-size: 4rem 4rem;
+    -webkit-mask-image: linear-gradient(to bottom, black, transparent 90%);
+    mask-image: linear-gradient(to bottom, black, transparent 90%);
   }
 
   .hero-grid {
@@ -189,13 +228,6 @@
   .hero-mark,
   .brand-mark-float {
     animation: none;
-  }
-}
-
-@media (min-width: 64rem) and (min-height: 50rem) and (prefers-reduced-motion: no-preference) {
-  .explore-directory-anchor {
-    position: sticky;
-    inset-block-start: calc(var(--site-header-height) + 2rem);
   }
 }
 

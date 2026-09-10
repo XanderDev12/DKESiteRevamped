@@ -12,7 +12,7 @@ export default function HomePage() {
         <div aria-hidden="true" className="hero-field absolute inset-0" />
         <div aria-hidden="true" className="hero-grid absolute inset-0" />
 
-        <Container className="relative grid min-h-[clamp(40rem,82svh,52rem)] items-center gap-14 py-16 sm:py-20 lg:grid-cols-[minmax(0,1.12fr)_minmax(20rem,0.72fr)] lg:gap-20 lg:py-24">
+        <Container className="relative grid min-h-[clamp(38rem,76svh,48rem)] items-center gap-14 py-16 sm:py-20 lg:grid-cols-[minmax(0,1.12fr)_minmax(20rem,0.72fr)] lg:gap-20 lg:py-24">
           <div className="hero-copy max-w-3xl">
             <p className="mb-7 flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.24em] text-brand-gold">
               <span className="h-px w-10 bg-brand-red" aria-hidden="true" />
