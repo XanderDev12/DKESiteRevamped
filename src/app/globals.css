@@ -132,40 +132,6 @@
     mask-image: linear-gradient(to bottom, black, transparent 92%);
   }
 
-  .panel-grid {
-    background-image:
-      linear-gradient(rgb(255 255 255 / 8%) 1px, transparent 1px),
-      linear-gradient(90deg, rgb(255 255 255 / 8%) 1px, transparent 1px);
-    background-size: 4rem 4rem;
-    -webkit-mask-image: linear-gradient(110deg, black, transparent 82%);
-    mask-image: linear-gradient(110deg, black, transparent 82%);
-    pointer-events: none;
-  }
-
-  .panel-grid-dark {
-    background-image:
-      linear-gradient(rgb(34 30 115 / 10%) 1px, transparent 1px),
-      linear-gradient(90deg, rgb(34 30 115 / 10%) 1px, transparent 1px);
-  }
-
-  .scroll-stack-list {
-    isolation: isolate;
-  }
-
-  .scroll-stack-panel {
-    z-index: var(--panel-z);
-    scroll-margin-block-start: calc(var(--site-header-height) + 1rem);
-  }
-
-  .scroll-stack-panel:focus-within {
-    z-index: 30;
-  }
-
-  .scroll-stack-surface {
-    display: flex;
-    min-block-size: clamp(28rem, 72svh, 48rem);
-  }
-
   .hero-copy {
     animation: hero-rise 700ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
   }
@@ -194,11 +160,23 @@
 @keyframes mark-float {
   0%,
   100% {
-    transform: translateY(0);
+    transform: translateY(0.35rem);
   }
 
   50% {
-    transform: translateY(-0.5rem);
+    transform: translateY(-0.35rem);
+  }
+}
+
+@keyframes directory-rise {
+  from {
+    opacity: 0.92;
+    transform: translateY(1rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -214,15 +192,33 @@
   }
 }
 
-@media (min-width: 48rem) and (min-height: 40rem) and (prefers-reduced-motion: no-preference) {
-  .scroll-stack-panel {
+@media (min-width: 64rem) and (min-height: 50rem) and (prefers-reduced-motion: no-preference) {
+  .explore-directory-anchor {
     position: sticky;
-    inset-block-start: calc(var(--site-header-height) + var(--panel-offset));
+    inset-block-start: calc(var(--site-header-height) + 2rem);
   }
+}
 
-  .scroll-stack-surface {
-    min-block-size: calc(
-      100svh - var(--site-header-height) - var(--panel-offset)
-    );
+@supports (animation-timeline: view()) and (animation-range: entry 5% cover 32%) {
+  @media (min-width: 64rem) and (min-height: 50rem) and (prefers-reduced-motion: no-preference) {
+    .explore-directory-item {
+      animation: directory-rise 1ms linear both;
+      animation-timeline: view(block);
+      animation-range: entry 5% cover 32%;
+    }
+
+    .explore-directory-item:focus-within {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+@media print {
+  .explore-directory-item {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
   }
 }

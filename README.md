@@ -13,8 +13,8 @@ An intentionally content-neutral React and TypeScript scaffold for the Psi Omega
 - Geist handles interface and body text; Newsreader provides the editorial display voice.
 - Shared semantic tokens control color, radius, shadow, typography, and motion.
 - Reusable containers, buttons, surfaces, page heroes, navigation, and brand components keep new routes consistent.
-- The homepage uses native sticky positioning to layer its destination panels on larger viewports; mobile, zoomed, and reduced-motion layouts fall back to normal document flow.
-- Motion is ornamental, CSS-only, and disabled when reduced motion is requested.
+- The homepage uses a sticky editorial anchor with compact destination rows that rise through normal document flow; mobile, short, zoomed, and reduced-motion layouts fall back to a straightforward list.
+- Motion is ornamental and progressive; navigation remains usable without it, and transitions are disabled when reduced motion is requested.
 - Public site identity is centralized in `src/lib/site-config.ts` so chapter-specific naming can be updated once.
 
 ## Prepared sections
@@ -42,7 +42,7 @@ src/
   components/
     brand/           Approved identity components
     ui/              Reusable layout and interaction primitives
-    explore-panel.tsx Homepage destination panel and stack presentation
+    explore-directory.tsx Homepage chapter directory and scroll presentation
     page-hero.tsx    Shared interior-page introduction
     site-*.tsx       Responsive navigation shell
   features/

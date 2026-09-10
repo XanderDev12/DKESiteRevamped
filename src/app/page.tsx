@@ -1,5 +1,5 @@
 import { BrandMark } from '@/components/brand/brand-mark';
-import { ExplorePanel } from '@/components/explore-panel';
+import { ExploreDirectory } from '@/components/explore-directory';
 import { ButtonLink } from '@/components/ui/button-link';
 import { Container } from '@/components/ui/container';
 import { contentAreas } from '@/lib/navigation';
@@ -12,7 +12,7 @@ export default function HomePage() {
         <div aria-hidden="true" className="hero-field absolute inset-0" />
         <div aria-hidden="true" className="hero-grid absolute inset-0" />
 
-        <Container className="relative grid min-h-[calc(100svh-var(--site-header-height))] items-center gap-14 py-16 sm:py-20 lg:grid-cols-[minmax(0,1.12fr)_minmax(20rem,0.72fr)] lg:gap-20 lg:py-24">
+        <Container className="relative grid min-h-[clamp(40rem,82svh,52rem)] items-center gap-14 py-16 sm:py-20 lg:grid-cols-[minmax(0,1.12fr)_minmax(20rem,0.72fr)] lg:gap-20 lg:py-24">
           <div className="hero-copy max-w-3xl">
             <p className="mb-7 flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.24em] text-brand-gold">
               <span className="h-px w-10 bg-brand-red" aria-hidden="true" />
@@ -37,62 +37,31 @@ export default function HomePage() {
           </div>
 
           <div className="hero-mark relative mx-auto w-full max-w-sm lg:mr-0">
-            <div
-              aria-hidden="true"
-              className="absolute -inset-5 rotate-3 rounded-[2.5rem] border border-brand-gold/30 sm:-inset-7"
-            />
-            <div
-              aria-hidden="true"
-              className="absolute -bottom-7 -left-7 size-32 rounded-full bg-brand-red/70 blur-3xl"
-            />
-            <figure className="brand-mark-float relative overflow-hidden rounded-[2rem] border border-white/15 bg-surface-soft p-7 shadow-emblem sm:p-9">
+            <div className="brand-mark-float relative">
               <div
                 aria-hidden="true"
-                className="absolute inset-x-0 top-0 h-1.5 brand-stripe"
+                className="absolute -inset-5 rotate-3 rounded-[2.5rem] border border-brand-gold/30 sm:-inset-7"
               />
-              <BrandMark priority sizes="(min-width: 1024px) 22rem, 70vw" />
-            </figure>
-            <div className="absolute -bottom-5 -right-4 rounded-full border-4 border-brand-blue-deep bg-brand-red px-5 py-3 font-display text-2xl font-semibold text-white shadow-xl sm:-right-7">
-              {siteConfig.shortName}
+              <div
+                aria-hidden="true"
+                className="absolute -bottom-7 -left-7 size-32 rounded-full bg-brand-red/70 blur-3xl"
+              />
+              <figure className="relative overflow-hidden rounded-[2rem] border border-white/15 bg-surface-soft p-7 shadow-emblem sm:p-9">
+                <div
+                  aria-hidden="true"
+                  className="absolute inset-x-0 top-0 h-1.5 brand-stripe"
+                />
+                <BrandMark priority sizes="(min-width: 1024px) 22rem, 70vw" />
+              </figure>
+              <div className="absolute -bottom-5 -right-4 rounded-full border-4 border-brand-blue-deep bg-brand-red px-5 py-3 font-display text-2xl font-semibold text-white shadow-xl sm:-right-7">
+                {siteConfig.shortName}
+              </div>
             </div>
           </div>
         </Container>
       </section>
 
-      <section
-        aria-labelledby="explore-heading"
-        className="relative z-10 bg-background focus-within:z-30"
-      >
-        <div className="relative overflow-hidden py-16 sm:py-20">
-          <div aria-hidden="true" className="section-glow absolute inset-0" />
-          <Container className="relative">
-            <div className="grid gap-5 lg:grid-cols-[0.75fr_1.25fr] lg:items-end">
-              <p className="text-sm font-semibold uppercase tracking-[0.22em] text-brand-red">
-                Scroll to explore
-              </p>
-              <h2
-                id="explore-heading"
-                className="max-w-3xl font-display text-5xl font-medium leading-[0.96] tracking-[-0.04em] text-brand-blue sm:text-6xl"
-              >
-                Each part of Psi Omega, one layer at a time.
-              </h2>
-            </div>
-          </Container>
-        </div>
-
-        <ol className="scroll-stack-list m-0 list-none p-0">
-          {contentAreas.map((area, index) => (
-            <ExplorePanel
-              key={area.href}
-              description={area.description}
-              href={area.href}
-              index={index + 1}
-              title={area.label}
-              total={contentAreas.length}
-            />
-          ))}
-        </ol>
-      </section>
+      <ExploreDirectory items={contentAreas} />
     </>
   );
 }
