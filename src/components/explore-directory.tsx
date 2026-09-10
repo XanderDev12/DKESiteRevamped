@@ -19,6 +19,7 @@ interface ExploreDirectoryProps {
 
 type DepthCardStyle = CSSProperties & {
   '--depth-base-angle'?: string;
+  '--depth-inverse-base-angle'?: string;
 };
 
 const accentThemes: Record<
@@ -88,6 +89,7 @@ export function ExploreDirectory({ items }: ExploreDirectoryProps) {
 
     if (!depthReady || !region || !stage || itemCount < 2) {
       region?.style.removeProperty('--depth-rotation');
+      region?.style.removeProperty('--depth-counter-rotation');
       activeIndexRef.current = 0;
       setActiveIndex(0);
       return;
@@ -116,6 +118,7 @@ export function ExploreDirectory({ items }: ExploreDirectoryProps) {
       const nextActiveIndex = clamp(Math.round(position), 0, itemCount - 1);
 
       region.style.setProperty('--depth-rotation', `${-degrees}deg`);
+      region.style.setProperty('--depth-counter-rotation', `${degrees}deg`);
 
       if (nextActiveIndex !== activeIndexRef.current) {
         activeIndexRef.current = nextActiveIndex;
@@ -151,6 +154,10 @@ export function ExploreDirectory({ items }: ExploreDirectoryProps) {
     regionRef.current?.style.setProperty(
       '--depth-rotation',
       `${index * -angleStep}deg`,
+    );
+    regionRef.current?.style.setProperty(
+      '--depth-counter-rotation',
+      `${index * angleStep}deg`,
     );
     setActiveIndex(index);
   };
@@ -240,53 +247,59 @@ export function ExploreDirectory({ items }: ExploreDirectoryProps) {
                       style={
                         {
                           '--depth-base-angle': `${baseAngle}deg`,
+                          '--depth-inverse-base-angle': `${-baseAngle}deg`,
                         } as DepthCardStyle
                       }
                     >
-                      <Link
-                        href={item.href}
-                        aria-labelledby={titleId}
-                        aria-describedby={descriptionId}
-                        className={cn('explore-depth-link group', theme.hover)}
-                        onFocus={() => handleLinkFocus(index)}
-                      >
-                        <span
-                          aria-hidden="true"
-                          className={cn('explore-depth-accent', theme.accent)}
-                        />
-                        <span className="flex items-start justify-between gap-5">
-                          <span
-                            id={titleId}
-                            className="explore-depth-title font-display font-medium tracking-[-0.045em]"
-                          >
-                            {item.label}
-                          </span>
+                      <div className="explore-depth-upright">
+                        <Link
+                          href={item.href}
+                          aria-labelledby={titleId}
+                          aria-describedby={descriptionId}
+                          className={cn(
+                            'explore-depth-link group',
+                            theme.hover,
+                          )}
+                          onFocus={() => handleLinkFocus(index)}
+                        >
                           <span
                             aria-hidden="true"
-                            className={cn(
-                              'font-mono text-[0.68rem] font-bold tracking-[0.18em]',
-                              theme.number,
-                            )}
+                            className={cn('explore-depth-accent', theme.accent)}
+                          />
+                          <span className="flex items-start justify-between gap-5">
+                            <span
+                              id={titleId}
+                              className="explore-depth-title font-display font-medium tracking-[-0.045em]"
+                            >
+                              {item.label}
+                            </span>
+                            <span
+                              aria-hidden="true"
+                              className={cn(
+                                'font-mono text-[0.68rem] font-bold tracking-[0.18em]',
+                                theme.number,
+                              )}
+                            >
+                              {position}
+                            </span>
+                          </span>
+                          <p
+                            id={descriptionId}
+                            className="explore-depth-description mt-4 max-w-md text-base leading-7"
                           >
-                            {position}
+                            {item.description}
+                          </p>
+                          <span
+                            aria-hidden="true"
+                            className="explore-depth-action mt-5 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.15em]"
+                          >
+                            Explore {item.label}
+                            <span className="text-base transition-transform duration-200 group-hover:translate-x-1">
+                              ↗
+                            </span>
                           </span>
-                        </span>
-                        <p
-                          id={descriptionId}
-                          className="explore-depth-description mt-4 max-w-md text-base leading-7"
-                        >
-                          {item.description}
-                        </p>
-                        <span
-                          aria-hidden="true"
-                          className="explore-depth-action mt-5 inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.15em]"
-                        >
-                          Explore {item.label}
-                          <span className="text-base transition-transform duration-200 group-hover:translate-x-1">
-                            ↗
-                          </span>
-                        </span>
-                      </Link>
+                        </Link>
+                      </div>
                     </li>
                   );
                 })}
