@@ -17,19 +17,19 @@ export function HistoryTimeline({ entries }: HistoryTimelineProps) {
   }
 
   return (
-    <ol className="space-y-8 border-l border-border pl-6">
+    <ol className="space-y-8 border-l-2 border-brand-gold pl-6">
       {entries.map((entry) => (
         <li key={entry.id} className="relative max-w-3xl">
           <span
             aria-hidden="true"
-            className="absolute -left-[1.78rem] top-2 size-3 rounded-full border-2 border-background bg-primary"
+            className="absolute -left-[1.84rem] top-2 size-3 rounded-full border-2 border-background bg-brand-red"
           />
           {entry.dateLabel ? (
             <p className="mb-1 text-sm font-medium text-muted-foreground">
               {entry.dateLabel}
             </p>
           ) : null}
-          <h2 className="text-xl font-semibold tracking-tight">
+          <h2 className="text-xl font-semibold tracking-tight text-brand-blue">
             {entry.title}
           </h2>
           {entry.body?.map((paragraph) => (

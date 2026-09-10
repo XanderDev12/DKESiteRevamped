@@ -1,6 +1,12 @@
 # DKESiteRevamped
 
-An intentionally content-neutral React and TypeScript scaffold for a future fraternity website. No names, dates, events, historical claims, imagery, or copy from the previous site are included.
+An intentionally content-neutral React and TypeScript scaffold for a future fraternity website. It includes the symbol supplied for this rebuild, but no names, dates, events, historical claims, or copy from the previous site.
+
+## Brand foundation
+
+- The approved fraternity symbol is stored at `public/fraternity-symbol.png`.
+- Blue (`#221E73`), gold (`#FDB710`), and red (`#B22117`) are defined as shared theme tokens in `app/globals.css`.
+- The layout uses those colors without retaining the previous site's broader visual design.
 
 ## Prepared sections
 

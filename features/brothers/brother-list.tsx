@@ -20,8 +20,10 @@ export function BrotherList({ brothers }: BrotherListProps) {
     <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {brothers.map((brother) => (
         <li key={brother.id}>
-          <article className="h-full rounded-xl border border-border bg-card p-6">
-            <h2 className="font-semibold tracking-tight">{brother.name}</h2>
+          <article className="h-full rounded-xl border border-t-4 border-border border-t-brand-blue bg-card p-6">
+            <h2 className="font-semibold tracking-tight text-brand-blue">
+              {brother.name}
+            </h2>
             {brother.classYear ? (
               <p className="mt-1 text-sm text-muted-foreground">
                 Class of {brother.classYear}

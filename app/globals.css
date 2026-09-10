@@ -1,10 +1,11 @@
 @import 'tailwindcss';
 
-@custom-variant dark (&:is(.dark *));
-
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-brand-blue: var(--brand-blue);
+  --color-brand-gold: var(--brand-gold);
+  --color-brand-red: var(--brand-red);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --color-ring: var(--ring);
@@ -31,34 +32,22 @@ body {
 }
 
 :root {
-  --background: oklch(0.985 0.004 255);
-  --foreground: oklch(0.19 0.015 255);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.19 0.015 255);
-  --primary: oklch(0.27 0.035 255);
-  --primary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.955 0.008 255);
-  --muted-foreground: oklch(0.5 0.02 255);
-  --accent: oklch(0.94 0.018 255);
-  --accent-foreground: oklch(0.22 0.03 255);
-  --border: oklch(0.9 0.01 255);
-  --ring: oklch(0.55 0.08 255);
+  --brand-blue: #221e73;
+  --brand-gold: #fdb710;
+  --brand-red: #b22117;
+  --background: #f8f8fb;
+  --foreground: #19192c;
+  --card: #ffffff;
+  --card-foreground: #19192c;
+  --primary: var(--brand-blue);
+  --primary-foreground: #ffffff;
+  --muted: #efeff6;
+  --muted-foreground: #5c5d6e;
+  --accent: #fff1c7;
+  --accent-foreground: var(--brand-blue);
+  --border: #d9d9e7;
+  --ring: var(--brand-red);
   --radius: 0.5rem;
-}
-
-.dark {
-  --background: oklch(0.16 0.015 255);
-  --foreground: oklch(0.96 0.005 255);
-  --card: oklch(0.2 0.018 255);
-  --card-foreground: oklch(0.96 0.005 255);
-  --primary: oklch(0.88 0.02 255);
-  --primary-foreground: oklch(0.2 0.018 255);
-  --muted: oklch(0.25 0.02 255);
-  --muted-foreground: oklch(0.72 0.015 255);
-  --accent: oklch(0.29 0.035 255);
-  --accent-foreground: oklch(0.96 0.005 255);
-  --border: oklch(1 0 0 / 10%);
-  --ring: oklch(0.64 0.08 255);
 }
 
 @layer base {
@@ -70,5 +59,16 @@ body {
   }
   html {
     @apply font-sans;
+  }
+}
+
+@layer utilities {
+  .brand-stripe {
+    background: linear-gradient(
+      90deg,
+      var(--brand-blue) 0 33.333%,
+      var(--brand-gold) 33.333% 66.666%,
+      var(--brand-red) 66.666% 100%
+    );
   }
 }
