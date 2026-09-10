@@ -13,7 +13,7 @@ An intentionally content-neutral React and TypeScript scaffold for the Psi Omega
 - Geist handles interface and body text; Newsreader provides the editorial display voice.
 - Shared semantic tokens control color, radius, shadow, typography, and motion.
 - Reusable containers, buttons, surfaces, page heroes, navigation, and brand components keep new routes consistent.
-- On spacious screens, the homepage directory becomes a bounded scroll-driven depth carousel: five destination cards travel left through a vertical depth path while staying front-facing, enter the frame one at a time with their own descriptions, then release naturally into the footer. The document remains the only scroll container.
+- On spacious screens, the homepage directory becomes a bounded scroll-driven depth carousel: five destination cards travel left through a vertical depth path while staying front-facing, with the centered destination highlighted before the section releases naturally into the footer. The document remains the only scroll container.
 - Motion is ornamental and progressive; mobile, short, zoomed, JavaScript-free, and reduced-motion layouts use a compact static directory instead.
 - Public site identity is centralized in `src/lib/site-config.ts` so chapter-specific naming can be updated once.
 
