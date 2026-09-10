@@ -1,63 +1,89 @@
-import Image from 'next/image';
-import Link from 'next/link';
-
-import { ContentPage } from '@/components/content-page';
+import { BrandMark } from '@/components/brand/brand-mark';
+import { ExploreCard } from '@/components/explore-card';
+import { ButtonLink } from '@/components/ui/button-link';
+import { Container } from '@/components/ui/container';
 import { contentAreas } from '@/lib/navigation';
-
-const accentClasses = {
-  blue: 'border-t-brand-blue hover:border-brand-blue',
-  gold: 'border-t-brand-gold hover:border-brand-gold',
-  red: 'border-t-brand-red hover:border-brand-red',
-} as const;
 
 export default function HomePage() {
   return (
-    <ContentPage
-      eyebrow="Site scaffold"
-      title="DKESiteRevamped"
-      description="A content-neutral foundation ready for verified chapter information as it becomes available."
-    >
-      <div className="grid items-start gap-8 lg:grid-cols-[18rem_minmax(0,1fr)]">
-        <figure className="rounded-2xl border border-brand-gold/60 bg-muted p-6">
-          <Image
-            src="/fraternity-symbol.png"
-            alt="Delta Kappa Epsilon coat of arms"
-            width={1433}
-            height={2150}
-            priority
-            className="mx-auto h-auto max-h-[30rem] w-full object-contain"
-            sizes="(min-width: 1024px) 18rem, 70vw"
-          />
-        </figure>
+    <>
+      <section className="relative isolate overflow-hidden bg-brand-blue-deep text-white">
+        <div aria-hidden="true" className="hero-field absolute inset-0" />
+        <div aria-hidden="true" className="hero-grid absolute inset-0" />
 
-        <section aria-labelledby="content-areas-heading">
-          <div className="mb-5 max-w-2xl">
-            <h2
-              id="content-areas-heading"
-              className="text-xl font-semibold tracking-tight text-brand-blue"
-            >
-              Prepared content areas
+        <Container className="relative grid items-center gap-14 py-16 sm:py-20 lg:grid-cols-[minmax(0,1.12fr)_minmax(20rem,0.72fr)] lg:gap-20 lg:py-24">
+          <div className="hero-copy max-w-3xl">
+            <p className="mb-7 flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.24em] text-brand-gold">
+              <span className="h-px w-10 bg-brand-red" aria-hidden="true" />
+              Delta Kappa Epsilon
+            </p>
+            <h1 className="font-display text-[clamp(4rem,10vw,8rem)] font-medium leading-[0.86] tracking-[-0.055em] text-balance">
+              The chapter,
+              <span className="block italic text-brand-gold">connected.</span>
+            </h1>
+            <p className="mt-8 max-w-xl text-lg leading-8 text-white/72 sm:text-xl sm:leading-9">
+              Meet the brothers, explore our history, and keep up with what is
+              happening next.
+            </p>
+            <div className="mt-10 flex flex-wrap gap-3">
+              <ButtonLink href="/brothers" variant="gold">
+                Meet the chapter
+              </ButtonLink>
+              <ButtonLink href="/events" variant="outline">
+                View events
+              </ButtonLink>
+            </div>
+          </div>
+
+          <div className="hero-mark relative mx-auto w-full max-w-sm lg:mr-0">
+            <div
+              aria-hidden="true"
+              className="absolute -inset-5 rotate-3 rounded-[2.5rem] border border-brand-gold/30 sm:-inset-7"
+            />
+            <div
+              aria-hidden="true"
+              className="absolute -bottom-7 -left-7 size-32 rounded-full bg-brand-red/70 blur-3xl"
+            />
+            <figure className="brand-mark-float relative overflow-hidden rounded-[2rem] border border-white/15 bg-surface-soft p-7 shadow-emblem sm:p-9">
+              <div
+                aria-hidden="true"
+                className="absolute inset-x-0 top-0 h-1.5 brand-stripe"
+              />
+              <BrandMark priority sizes="(min-width: 1024px) 22rem, 70vw" />
+            </figure>
+            <div className="absolute -bottom-5 -right-4 rounded-full border-4 border-brand-blue-deep bg-brand-red px-5 py-3 font-display text-2xl font-semibold text-white shadow-xl sm:-right-7">
+              ΔΚΕ
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      <section className="relative overflow-hidden py-20 sm:py-28">
+        <div aria-hidden="true" className="section-glow absolute inset-0" />
+        <Container className="relative">
+          <div className="grid gap-5 border-b border-border pb-10 lg:grid-cols-[0.75fr_1.25fr] lg:items-end">
+            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-brand-red">
+              Explore the chapter
+            </p>
+            <h2 className="max-w-3xl font-display text-5xl font-medium leading-[0.96] tracking-[-0.04em] text-brand-blue sm:text-6xl">
+              One place for the people, the story, and what comes next.
             </h2>
           </div>
 
-          <div className="grid gap-4">
-            {contentAreas.map((area) => (
-              <Link
+          <div className="mt-10 grid gap-5 lg:grid-cols-3">
+            {contentAreas.map((area, index) => (
+              <ExploreCard
                 key={area.href}
+                accent={area.accent}
+                description={area.description}
                 href={area.href}
-                className={`group block rounded-xl border border-t-4 bg-card p-6 transition-colors hover:bg-accent/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${accentClasses[area.accent]}`}
-              >
-                <h3 className="font-semibold tracking-tight text-brand-blue">
-                  {area.label}
-                </h3>
-                <p className="mt-2 text-sm leading-6 text-muted-foreground">
-                  {area.description}
-                </p>
-              </Link>
+                index={index + 1}
+                title={area.label}
+              />
             ))}
           </div>
-        </section>
-      </div>
-    </ContentPage>
+        </Container>
+      </section>
+    </>
   );
 }

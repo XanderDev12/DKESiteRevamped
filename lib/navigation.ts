@@ -12,19 +12,19 @@ export const contentAreas = [
     accent: 'blue',
     href: '/brothers',
     label: 'Brothers',
-    description: 'Member profiles and chapter leadership.',
+    description: 'Meet chapter members and leadership.',
   },
   {
     accent: 'gold',
     href: '/history',
     label: 'History',
-    description: 'A sourced timeline of chapter history.',
+    description: 'Explore the chapter story, milestone by milestone.',
   },
   {
     accent: 'red',
     href: '/events',
     label: 'Events',
-    description: 'Current and upcoming chapter events.',
+    description: 'See what is happening and what is coming up.',
   },
 ] as const satisfies readonly NavigationItem[];
 

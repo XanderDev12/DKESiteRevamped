@@ -13,9 +13,11 @@ export default async function HistoryPage() {
 
   return (
     <ContentPage
-      eyebrow="Archive"
+      accent="gold"
+      eyebrow="Our story"
+      marker="02"
       title="Chapter History"
-      description="This area is ready for a sourced and verified chapter timeline."
+      description="Explore a sourced record of the people and moments that shaped the chapter."
     >
       <HistoryTimeline entries={entries} />
     </ContentPage>

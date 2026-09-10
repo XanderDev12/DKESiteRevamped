@@ -13,9 +13,11 @@ export default async function BrothersPage() {
 
   return (
     <ContentPage
-      eyebrow="People"
+      accent="blue"
+      eyebrow="The chapter"
+      marker="01"
       title="Brothers & Leadership"
-      description="This area is ready for current, verified profiles and leadership roles."
+      description="Meet the members and leaders who make up the current chapter."
     >
       <BrotherList brothers={brothers} />
     </ContentPage>

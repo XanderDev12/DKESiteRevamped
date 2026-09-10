@@ -13,9 +13,11 @@ export default async function EventsPage() {
 
   return (
     <ContentPage
-      eyebrow="Calendar"
+      accent="red"
+      eyebrow="What is ahead"
+      marker="03"
       title="Events"
-      description="This area is ready for current event information from an approved source."
+      description="Find upcoming chapter events, important dates, and ways to take part."
     >
       <EventList events={events} />
     </ContentPage>

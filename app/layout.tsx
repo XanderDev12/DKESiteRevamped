@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Geist, Newsreader } from 'next/font/google';
 
 import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
+import { siteConfig } from '@/lib/site-config';
 
 import './globals.css';
 
@@ -11,18 +12,17 @@ const geistSans = Geist({
   subsets: ['latin'],
 });
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
+const newsreader = Newsreader({
+  variable: '--font-newsreader',
   subsets: ['latin'],
 });
 
 export const metadata: Metadata = {
   title: {
-    default: 'DKESiteRevamped',
-    template: '%s | DKESiteRevamped',
+    default: siteConfig.name,
+    template: `%s | ${siteConfig.name}`,
   },
-  description:
-    'An expandable React and TypeScript scaffold for future chapter content.',
+  description: siteConfig.description,
 };
 
 export default function RootLayout({
@@ -32,12 +32,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${geistSans.variable} ${newsreader.variable}`}>
         <a
           href="#main-content"
-          className="sr-only z-50 rounded-md bg-background px-4 py-2 text-foreground focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
+          className="sr-only z-[100] rounded-full bg-brand-gold px-5 py-3 font-semibold text-brand-blue-deep shadow-xl focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
         >
           Skip to content
         </a>
