@@ -10,9 +10,9 @@ export interface NavigationItem {
 export const contentAreas = [
   {
     accent: 'blue',
-    href: '/brothers',
-    label: 'Members',
-    description: 'Meet chapter members and leadership.',
+    href: '/leadership',
+    label: 'Leadership',
+    description: 'Meet the officers who guide the chapter.',
   },
   {
     accent: 'gold',

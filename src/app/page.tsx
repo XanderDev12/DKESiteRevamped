@@ -23,8 +23,8 @@ export default function HomePage() {
               <span className="block italic text-brand-gold">connected.</span>
             </h1>
             <p className="mt-8 max-w-xl text-lg leading-8 text-white/72 sm:text-xl sm:leading-9">
-              Meet the active chapter, explore our history, and stay connected
-              through events and alumni life.
+              Meet the chapter leadership, explore our history, and stay
+              connected through events and alumni life.
             </p>
             <div className="mt-10 flex flex-wrap gap-3">
               <ButtonLink href="/events" variant="gold">

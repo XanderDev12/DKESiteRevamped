@@ -19,13 +19,13 @@ An intentionally content-neutral React and TypeScript scaffold for the Psi Omega
 
 ## Prepared sections
 
-- Current members and chapter leadership
+- The nine chapter leadership offices and their future officer profiles
 - Verified chapter history
 - A shared event calendar with audience-aware records
 - An alumni hub for alumni events, donations, involvement, and the alumni board
 - Verified ways to contact current members
 
-Each data-backed section has a typed model, empty data adapter, and presentation component. The adapters currently return empty arrays by design and can later be replaced by approved static content, a CMS, or another data source without restructuring the page layer.
+Each data-backed section has a typed model, data adapter, and presentation component. Leadership exposes the nine confirmed offices while leaving officer profiles empty; the remaining adapters return empty arrays by design. Any adapter can later be replaced by approved static content, a CMS, or another data source without restructuring the page layer.
 
 ## Project structure
 
@@ -33,10 +33,11 @@ Each data-backed section has a typed model, empty data adapter, and presentation
 src/
   app/
     alumni/         Alumni hub and anchored subsections
-    brothers/       Current members and leadership route
+    brothers/       Compatibility redirect to the leadership route
     contact/        Current-member contact route
     events/         Shared event calendar route
     history/        History route
+    leadership/     Chapter leadership route
     layout.tsx      Shared application shell and metadata
     page.tsx        Homepage hero and chapter directory
   components/
@@ -47,10 +48,10 @@ src/
     site-*.tsx       Responsive navigation shell
   features/
     alumni/         Board and alumni-resource adapters
-    brothers/       Types, data adapter, and list UI
     contact/        Verified contact-channel adapter
     events/         Audience-aware calendar model and UI
     history/        Types, data adapter, and timeline UI
+    leadership/     Fixed offices, officer adapter, and grid UI
   lib/
     navigation.ts    Shared route metadata
     site-config.ts   Public identity and metadata
@@ -77,4 +78,4 @@ npm run build
 
 Begin with the types in each `src/features/*/types.ts` module. Add a verified source through the corresponding `data.ts` adapter, or replace that adapter with a CMS/API integration. Page components already consume those adapters and provide intentional empty states until records exist.
 
-The feature boundaries are ready to grow independently: members can be grouped by leadership role or class year, history can be divided into sourced eras, and the shared event source can power both the full calendar and alumni-only events. Alumni anchors can become dedicated routes later without changing their data adapters.
+The feature boundaries are ready to grow independently: verified officer details can populate the fixed leadership offices, history can be divided into sourced eras, and the shared event source can power both the full calendar and alumni-only events. Alumni anchors can become dedicated routes later without changing their data adapters.
