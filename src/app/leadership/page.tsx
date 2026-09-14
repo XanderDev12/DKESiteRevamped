@@ -18,7 +18,6 @@ export default async function LeadershipPage() {
       eyebrow="The chapter"
       marker="01"
       title="Chapter Leadership"
-      description="The nine offices responsible for guiding Psi Omega. Current officer profiles will be added once their information is verified."
     >
       <LeadershipGrid offices={offices} />
     </ContentPage>

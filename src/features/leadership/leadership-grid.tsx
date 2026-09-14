@@ -12,33 +12,25 @@ const officeAccents: readonly NavigationAccent[] = ['blue', 'gold', 'red'];
 export function LeadershipGrid({ offices }: LeadershipGridProps) {
   return (
     <section aria-labelledby="leadership-offices-heading">
-      <h2 id="leadership-offices-heading" className="sr-only">
-        Leadership offices
+      <h2
+        id="leadership-offices-heading"
+        className="mb-7 font-display text-3xl font-medium tracking-[-0.035em] text-brand-blue"
+      >
+        Officer positions
       </h2>
 
-      <ol className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+      <ul className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {offices.map((office, index) => {
-          const marker = String(index + 1).padStart(2, '0');
           const accent = officeAccents[index % officeAccents.length];
 
           return (
             <li key={office.id}>
               <SurfaceCard
                 accent={accent}
-                className="h-full min-h-40 overflow-hidden p-6 sm:p-7"
+                className="h-full overflow-hidden p-6 sm:p-7"
               >
                 <article className="flex h-full flex-col">
-                  <div className="flex items-center justify-between gap-4">
-                    <p className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground">
-                      Office {marker}
-                    </p>
-                    <span
-                      aria-hidden="true"
-                      className="h-px w-10 bg-brand-gold"
-                    />
-                  </div>
-
-                  <h3 className="mt-6 max-w-xs font-display text-3xl font-medium leading-[0.98] tracking-[-0.035em] text-brand-blue sm:text-[2.15rem]">
+                  <h3 className="max-w-xs font-display text-3xl font-medium leading-[0.98] tracking-[-0.035em] text-brand-blue sm:text-[2.15rem]">
                     {office.title}
                   </h3>
 
@@ -70,7 +62,7 @@ export function LeadershipGrid({ offices }: LeadershipGridProps) {
             </li>
           );
         })}
-      </ol>
+      </ul>
     </section>
   );
 }
