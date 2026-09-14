@@ -49,6 +49,8 @@ const accentThemes: Record<
 
 const depthMediaQuery =
   '(min-width: 64rem) and (min-height: 50rem) and (pointer: fine) and (prefers-reduced-motion: no-preference)';
+const settleDelay = 200;
+const settleTolerance = 1.5;
 
 function clamp(value: number, minimum: number, maximum: number) {
   return Math.min(Math.max(value, minimum), maximum);
@@ -60,6 +62,7 @@ export function ExploreDirectory({ items }: ExploreDirectoryProps) {
   const exitRef = useRef<HTMLDivElement>(null);
   const focusWithinRef = useRef(false);
   const activeIndexRef = useRef(0);
+  const settleTimeoutRef = useRef<number | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [depthReady, setDepthReady] = useState(false);
 
@@ -88,6 +91,11 @@ export function ExploreDirectory({ items }: ExploreDirectoryProps) {
     const stage = stageRef.current;
 
     if (!depthReady || !region || !stage || itemCount < 2) {
+      if (settleTimeoutRef.current !== null) {
+        window.clearTimeout(settleTimeoutRef.current);
+        settleTimeoutRef.current = null;
+      }
+
       region?.style.removeProperty('--depth-rotation');
       region?.style.removeProperty('--depth-counter-rotation');
       activeIndexRef.current = 0;
@@ -97,13 +105,7 @@ export function ExploreDirectory({ items }: ExploreDirectoryProps) {
 
     let animationFrame = 0;
 
-    const updateDepth = () => {
-      animationFrame = 0;
-
-      if (focusWithinRef.current) {
-        return;
-      }
-
+    const getDepthGeometry = () => {
       const regionRect = region.getBoundingClientRect();
       const stickyTop =
         Number.parseFloat(window.getComputedStyle(stage).top) || 0;
@@ -112,7 +114,29 @@ export function ExploreDirectory({ items }: ExploreDirectoryProps) {
         region.offsetHeight - stage.offsetHeight - exitHeight,
         1,
       );
-      const progress = clamp((stickyTop - regionRect.top) / travel, 0, 1);
+
+      return {
+        offset: stickyTop - regionRect.top,
+        travel,
+      };
+    };
+
+    const clearSettleTimeout = () => {
+      if (settleTimeoutRef.current !== null) {
+        window.clearTimeout(settleTimeoutRef.current);
+        settleTimeoutRef.current = null;
+      }
+    };
+
+    const updateDepth = () => {
+      animationFrame = 0;
+
+      if (focusWithinRef.current) {
+        return;
+      }
+
+      const { offset, travel } = getDepthGeometry();
+      const progress = clamp(offset / travel, 0, 1);
       const position = progress * (itemCount - 1);
       const degrees = position * angleStep;
       const nextActiveIndex = clamp(Math.round(position), 0, itemCount - 1);
@@ -126,14 +150,78 @@ export function ExploreDirectory({ items }: ExploreDirectoryProps) {
       }
     };
 
+    const settleToNearestItem = () => {
+      settleTimeoutRef.current = null;
+
+      if (focusWithinRef.current) {
+        return;
+      }
+
+      const { offset, travel } = getDepthGeometry();
+
+      if (offset <= 0 || offset >= travel) {
+        return;
+      }
+
+      const stepTravel = travel / (itemCount - 1);
+      const targetOffset = clamp(
+        Math.round(offset / stepTravel) * stepTravel,
+        0,
+        travel,
+      );
+      const maximumScroll = Math.max(
+        document.documentElement.scrollHeight - window.innerHeight,
+        0,
+      );
+      const targetScrollTop = clamp(
+        window.scrollY + targetOffset - offset,
+        0,
+        maximumScroll,
+      );
+
+      if (Math.abs(targetScrollTop - window.scrollY) <= settleTolerance) {
+        return;
+      }
+
+      window.scrollTo({
+        top: targetScrollTop,
+        behavior: 'smooth',
+      });
+    };
+
     const scheduleUpdate = () => {
       if (animationFrame === 0) {
         animationFrame = window.requestAnimationFrame(updateDepth);
       }
     };
 
-    window.addEventListener('scroll', scheduleUpdate, { passive: true });
-    window.addEventListener('resize', scheduleUpdate);
+    const supportsScrollEnd = 'onscrollend' in document;
+
+    const handleScroll = () => {
+      scheduleUpdate();
+
+      if (!supportsScrollEnd) {
+        clearSettleTimeout();
+        settleTimeoutRef.current = window.setTimeout(
+          settleToNearestItem,
+          settleDelay,
+        );
+      }
+    };
+
+    const handleScrollEnd = () => settleToNearestItem();
+
+    const handleResize = () => {
+      clearSettleTimeout();
+      scheduleUpdate();
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleResize);
+
+    if (supportsScrollEnd) {
+      document.addEventListener('scrollend', handleScrollEnd);
+    }
 
     const resizeObserver = new ResizeObserver(scheduleUpdate);
     resizeObserver.observe(region);
@@ -142,13 +230,20 @@ export function ExploreDirectory({ items }: ExploreDirectoryProps) {
 
     return () => {
       window.cancelAnimationFrame(animationFrame);
-      window.removeEventListener('scroll', scheduleUpdate);
-      window.removeEventListener('resize', scheduleUpdate);
+      clearSettleTimeout();
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleResize);
+      document.removeEventListener('scrollend', handleScrollEnd);
       resizeObserver.disconnect();
     };
   }, [angleStep, depthReady, itemCount]);
 
   const handleLinkFocus = (index: number) => {
+    if (settleTimeoutRef.current !== null) {
+      window.clearTimeout(settleTimeoutRef.current);
+      settleTimeoutRef.current = null;
+    }
+
     focusWithinRef.current = true;
     activeIndexRef.current = index;
     regionRef.current?.style.setProperty(
